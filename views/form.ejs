@@ -1,15 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form</title>
-</head>
-<body>
+<header>
+    <h1>Summon a New Spirit</h1>
+</header>
+
+<div class="card">
+    <a href="/" class="back-link">← Return to the Spirit Forest</a>
+    
     <form action="/new" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username">
-        <button type="submit">Submit</button>
+        <label for="username">Spirit Name:</label>
+        <input type="text" id="username" name="username" placeholder="Enter a magical name..." required>
+        <button type="submit" class="submit-btn">Summon Spirit</button>
     </form>
-</body>
-</html>
+</div>
+
+<script>
+    // Add sparkle effect on submit
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const button = document.querySelector('.submit-btn');
+        button.innerHTML = 'Summoning...';
+        
+        // Create sparkle effect
+        createSparkles();
+    });
+    
+    function createSparkles() {
+        const container = document.querySelector('.card');
+        const sparkleCount = 15;
+        
+        for (let i = 0; i < sparkleCount; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'absolute';
+            sparkle.style.width = '8px';
+            sparkle.style.height = '8px';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.backgroundColor = '#ffeb3b';
+            sparkle.style.boxShadow = '0 0 10px 2px rgba(255, 235, 59, 0.7)';
+            
+            // Random position near the button
+            const button = document.querySelector('.submit-btn');
+            const buttonRect = button.getBoundingClientRect();
+            const cardRect = container.getBoundingClientRect();
+            
+            const x = buttonRect.left - cardRect.left + buttonRect.width/2 + (Math.random() * 100 - 50);
+            const y = buttonRect.top - cardRect.top + (Math.random() * 20);
+            
+            sparkle.style.left = `${x}px`;
+            sparkle.style.top = `${y}px`;
+            sparkle.style.zIndex = '10';
+            
+            // Animate
+            sparkle.animate([
+                { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+                { transform: `scale(1) translate(${Math.random() * 100 - 50}px, ${-100 - Math.random() * 100}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: 1000 + Math.random() * 1000,
+                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            });
+            
+            container.appendChild(sparkle);
+            
+            // Remove after animation
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+    }
+</script>
